@@ -32,12 +32,30 @@ class GridTilePositioner {
   }
 
   Offset _tileOffset(TileIdentity tile) {
+    final tilePoint = tile.toDoublePoint();
+    final scaledPoint = scaleBy(tilePoint.toIntPoint(), tileSize.toIntPoint());
+
     final tilePosition =
-        ((tile.toDoublePoint().scaleBy(tileSize) - state.origin) *
-                state.zoomScale) +
-            state.translate;
+        ((scaledPoint - state.origin.toIntPoint()) * state.zoomScale) +
+            state.translate.toIntPoint();
     return Offset(tilePosition.x.toDouble(), tilePosition.y.toDouble());
   }
+
+  Point<int> scaleBy(Point<int> poi, Point<int> other) {
+    return Point<int>(poi.x * other.x, poi.y * other.y);
+  }
+}
+
+extension OffsetToPointExtension on Offset {
+  @Deprecated(
+    'Prefer `toPoint()`. '
+    "This method has been renamed as a result of CustomPoint's removal. "
+    'This method is deprecated since v6.',
+  )
+  Point<double> toCustomPoint() => toPoint();
+
+  /// Creates a [Point] representation of this offset.
+  Point<double> toPoint() => Point(dx, dy);
 }
 
 class GridTileSizer {
