@@ -33,16 +33,15 @@ class GridTilePositioner {
 
   Offset _tileOffset(TileIdentity tile) {
     final tilePoint = tile.toDoublePoint();
-    final scaledPoint = scaleBy(tilePoint.toIntPoint(), tileSize.toIntPoint());
+    final scaledPoint = scaleBy(tilePoint, tileSize);
 
     final tilePosition =
-        ((scaledPoint - state.origin.toIntPoint()) * state.zoomScale) +
-            state.translate.toIntPoint();
+        ((scaledPoint - state.origin) * state.zoomScale) + state.translate;
     return Offset(tilePosition.x.toDouble(), tilePosition.y.toDouble());
   }
 
-  Point<int> scaleBy(Point<int> poi, Point<int> other) {
-    return Point<int>(poi.x * other.x, poi.y * other.y);
+  Point<double> scaleBy(Point<double> poi, Point<double> other) {
+    return Point<double>(poi.x * other.x, poi.y * other.y);
   }
 }
 
